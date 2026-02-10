@@ -23,11 +23,13 @@ public class SpawnManager : MonoBehaviour {
     [Tooltip("Item boxes")]
     [SerializeField] private GameObject balloonPrefab;
 
+    /************** HOOKS **************/
+
     public static SpawnManager Instance {
         get {
             if (_instance == null) {
                 _instance = FindFirstObjectByType<SpawnManager>();
-                if (_instance != null) {
+                if (_instance == null) {
                     GameObject go = new GameObject("SpawnManager");
                     _instance = go.AddComponent<SpawnManager>();
                 }
@@ -40,6 +42,8 @@ public class SpawnManager : MonoBehaviour {
         StartCoroutine(SpawnChilds());
         StartCoroutine(SpawnBalloons());
     }
+
+    /************** PRIVATE COROUTINES **************/
 
     private IEnumerator SpawnChilds () {
         if (childPrefab == null) yield return null;

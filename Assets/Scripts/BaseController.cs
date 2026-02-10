@@ -6,7 +6,7 @@ public class BaseController : MonoBehaviour
     public int score = 0;
 
     [Header("Player Base Settings")]
-    [SerializeField] private PlayerId playerOwner;
+    [SerializeField] private EnumPlayerID playerOwner;
     [SerializeField] private Transform collectionPoint;
 
     private void OnTriggerEnter(Collider other) {
@@ -15,7 +15,10 @@ public class BaseController : MonoBehaviour
 
             if (player == null || player.GetPlayerID() != playerOwner) return;
 
-            if (player.DropKid(collectionPoint)) ++score;
+            if (player.DropKid(collectionPoint)) {
+                ++score;
+                GameManager.Instance.SetPlayerScoreText(playerOwner, score);
+            }
         }
     }
 }

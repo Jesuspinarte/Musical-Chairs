@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour {
 
     [Header("Player Settings")]
-    [SerializeField] PlayerId playerId;
+    [SerializeField] EnumPlayerID playerId;
     [SerializeField] InputActionReference moveAction;
 
     [Header("Movement Settings")]
@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour {
         _collecteKid = kid;
     }
 
-    public PlayerId GetPlayerID() {
+    public EnumPlayerID GetPlayerID() {
         return playerId;
     }
 
