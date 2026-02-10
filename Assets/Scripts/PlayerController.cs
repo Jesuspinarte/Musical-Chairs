@@ -1,11 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public enum PlayerId {
-    player1,
-    player2
-}
-
 public class PlayerController : MonoBehaviour {
 
     [Header("Player Settings")]
@@ -16,8 +11,16 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float acceleration = 50f;
     [SerializeField] private float maxMovementSpeed = 10f;
     [SerializeField] private float rotationSpeed = 0.15f;
+
+    [Header("Collectable Settings")]
+    [SerializeField] private Transform childPosition; // Where the child will be when it's collected
+
     private Vector2 _movementInput = Vector3.zero;
     private Rigidbody _rb;
+
+    private Transform _collecteKid = null;
+
+    /************** HOOKS **************/
 
     private void Awake() {
         _rb = GetComponent<Rigidbody>();
@@ -55,8 +58,25 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    /************** PRIVATE **************/
+
     private void GetMovement() {
         if (_movementInput == null) return;
         _movementInput = moveAction.action.ReadValue<Vector2>();
     }
+
+    /************** PUBLIC **************/
+    public Transform GetSittingPoint() {
+        if (childPosition == null) return null;
+        return childPosition;
+    }
+
+    public bool HasSittingKid() {
+        return _collecteKid != null;
+    }
+
+    public void SitKid(Transform kid) {
+        _collecteKid = kid;
+    }
+
 }

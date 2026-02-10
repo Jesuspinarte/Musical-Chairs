@@ -58,6 +58,9 @@ public class SpawnManager : MonoBehaviour {
         StartCoroutine(SpawnChilds());
     }
 
+    /**
+     * Item boxes spawner
+     */
     private IEnumerator SpawnBalloons() {
         if (balloonPrefab == null) yield return null;
         if (balloonsContainer == null) yield return null;

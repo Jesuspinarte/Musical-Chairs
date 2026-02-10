@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class ChildController : MonoBehaviour {
+public class ChildAI : MonoBehaviour {
     [Header("Dectection Settings")]
     [SerializeField] float detectionRadius = 10f;
     [SerializeField] float runDistance = 0.5f;
