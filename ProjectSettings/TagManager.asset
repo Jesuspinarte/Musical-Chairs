@@ -8,6 +8,7 @@ TagManager:
   - ItemBox
   - Obstacle
   - Base
+  - CanChangeColor
   layers:
   - Default
   - TransparentFX

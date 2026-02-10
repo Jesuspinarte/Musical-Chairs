@@ -86,15 +86,15 @@ public class PlayerController : MonoBehaviour {
         return playerId;
     }
 
-    public bool DropKid(Transform collectionPoint) {
-        if (_collecteKid == null) return false;
-        bool detatchSucceed = false;
+    public KidController DropKid(Transform collectionPoint) {
+        if (_collecteKid == null) return null;
+        KidController kidController = null;
 
         KidController kid = _collecteKid.GetComponent<KidController>();
-        detatchSucceed = kid.DetatchFromPlayer(collectionPoint);
+        kidController = kid.DetatchFromPlayer(collectionPoint);
         _collecteKid = null;
         _rb.linearDamping = _initialLinearDamping;
 
-        return detatchSucceed;
+        return kidController;
     }
 }

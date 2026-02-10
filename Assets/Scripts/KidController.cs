@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class KidController : MonoBehaviour {
@@ -10,6 +11,7 @@ public class KidController : MonoBehaviour {
 
     [Header("Kid Settings")]
     [SerializeField] private float destroyTimer = 5f;
+    [SerializeField] private List<SkinnedMeshRenderer> rendererList;
 
     private Rigidbody _rb;
     private PlayerController _chairOwner = null; // The chair that collected the kid
@@ -56,8 +58,8 @@ public class KidController : MonoBehaviour {
     }
 
     /************** PUBLIC **************/
-    public bool DetatchFromPlayer(Transform collectionPoint) {
-        if (_chairOwner == null) return false;
+    public KidController DetatchFromPlayer(Transform collectionPoint) {
+        if (_chairOwner == null) return null;
 
         _chairOwner = null;
         collisionCollider.enabled = true;
@@ -66,7 +68,7 @@ public class KidController : MonoBehaviour {
 
         StartCoroutine(RemoveKidFromGame());
 
-        return true;
+        return GetComponent<KidController>();
     }
 
     public void SetKidMass(float mass) {
@@ -76,5 +78,13 @@ public class KidController : MonoBehaviour {
 
     public float GetKidMas() {
         return _rb.mass;
+    }
+
+    public void UpdateKidColor(Color newColor) {
+        if (rendererList == null || rendererList.Count == 0) return;
+
+        foreach (Renderer renderer in rendererList) {
+            renderer.material.color = newColor;
+        }
     }
 }

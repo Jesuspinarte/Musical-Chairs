@@ -1,7 +1,6 @@
 using UnityEngine;
 
-public class BaseController : MonoBehaviour
-{
+public class BaseController : MonoBehaviour {
     [Header("Debug Settings")]
     public int score = 0;
 
@@ -15,8 +14,10 @@ public class BaseController : MonoBehaviour
 
             if (player == null || player.GetPlayerID() != playerOwner) return;
 
-            if (player.DropKid(collectionPoint)) {
-                ++score;
+            KidController kid = player.DropKid(collectionPoint);
+
+            if (kid != null) {
+                score += (int)Mathf.Ceil(kid.GetKidMas());
                 GameManager.Instance.SetPlayerScoreText(playerOwner, score);
             }
         }

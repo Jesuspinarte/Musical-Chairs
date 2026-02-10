@@ -46,7 +46,7 @@ public class SpawnManager : MonoBehaviour {
 
     /************** PRIVATE COROUTINES **************/
 
-    private IEnumerator SpawnChilds () {
+    private IEnumerator SpawnChilds() {
         if (childPrefab == null) yield return null;
         if (childsContainer == null) yield return null;
 
@@ -57,9 +57,13 @@ public class SpawnManager : MonoBehaviour {
         spawnPoint.y = initialAltitude;
 
         float spawnMass = Random.Range(childMassRange.x, childMassRange.y);
+        float colorValue = 1f - ((spawnMass - 1f) / (childMassRange.y - 1f));
+        Color newColor = new Color(colorValue, colorValue, colorValue, 1f);
 
-        GameObject kid = Instantiate(childPrefab, spawnPoint, Quaternion.identity, childsContainer.transform);
-        kid.GetComponent<KidController>().SetKidMass(spawnMass);
+        KidController kidController = Instantiate(childPrefab, spawnPoint, Quaternion.identity, childsContainer.transform).GetComponent<KidController>();
+
+        kidController.SetKidMass(spawnMass);
+        kidController.UpdateKidColor(newColor);
 
         yield return new WaitForSeconds(spawnChildTime);
 
