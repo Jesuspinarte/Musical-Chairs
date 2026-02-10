@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class KidController : MonoBehaviour {
@@ -7,9 +8,17 @@ public class KidController : MonoBehaviour {
     [SerializeField] private SphereCollider triggerCollider;
     [SerializeField] private SphereCollider collisionCollider;
 
+    [Header("Kid Settings")]
+    [SerializeField] private float destroyTimer = 5f;
+
+    private Rigidbody _rb;
     private PlayerController _chairOwner = null; // The chair that collected the kid
 
     /************** HOOKS **************/
+
+    private void Awake() {
+        _rb = GetComponent<Rigidbody>();
+    }
 
     private void Update() {
         SitOnChair();
@@ -40,4 +49,23 @@ public class KidController : MonoBehaviour {
         transform.rotation = followPoint.rotation;
     }
 
+    private IEnumerator RemoveKidFromGame() {
+        yield return new WaitForSeconds(destroyTimer);
+
+        Destroy(gameObject);
+    }
+
+    /************** PUBLIC **************/
+    public bool DetatchFromPlayer(Transform collectionPoint) {
+        if (_chairOwner == null) return false;
+
+        _chairOwner = null;
+        collisionCollider.enabled = true;
+        _rb.linearVelocity = Vector3.zero;
+        transform.position = collectionPoint.position;
+
+        StartCoroutine(RemoveKidFromGame());
+
+        return true;
+    }
 }

@@ -79,4 +79,18 @@ public class PlayerController : MonoBehaviour {
         _collecteKid = kid;
     }
 
+    public PlayerId GetPlayerID() {
+        return playerId;
+    }
+
+    public bool DropKid(Transform collectionPoint) {
+        if (_collecteKid == null) return false;
+        bool detatchSucceed = false;
+
+        KidController kid = _collecteKid.GetComponent<KidController>();
+        detatchSucceed = kid.DetatchFromPlayer(collectionPoint);
+        _collecteKid = null;
+
+        return detatchSucceed;
+    }
 }
