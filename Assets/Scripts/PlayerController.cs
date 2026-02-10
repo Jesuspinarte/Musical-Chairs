@@ -16,14 +16,16 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private Transform childPosition; // Where the child will be when it's collected
 
     private Vector2 _movementInput = Vector3.zero;
+    private Transform _collecteKid = null;
+    private float _initialLinearDamping = 0f;
     private Rigidbody _rb;
 
-    private Transform _collecteKid = null;
 
     /************** HOOKS **************/
 
     private void Awake() {
         _rb = GetComponent<Rigidbody>();
+        _initialLinearDamping = _rb.linearDamping;
     }
 
     private void OnEnable() {
@@ -77,6 +79,7 @@ public class PlayerController : MonoBehaviour {
 
     public void SitKid(Transform kid) {
         _collecteKid = kid;
+        _rb.linearDamping = kid.GetComponent<KidController>().GetKidMas() * .75f;
     }
 
     public EnumPlayerID GetPlayerID() {
@@ -90,6 +93,7 @@ public class PlayerController : MonoBehaviour {
         KidController kid = _collecteKid.GetComponent<KidController>();
         detatchSucceed = kid.DetatchFromPlayer(collectionPoint);
         _collecteKid = null;
+        _rb.linearDamping = _initialLinearDamping;
 
         return detatchSucceed;
     }

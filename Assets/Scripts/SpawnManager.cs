@@ -9,6 +9,7 @@ public class SpawnManager : MonoBehaviour {
     [SerializeField] private Vector2 endingPoint = Vector2.zero;
 
     [Header("Spawn Settings")]
+    [SerializeField] private Vector2 childMassRange = Vector2.one;
     [SerializeField] private float spawnChildTime = 2f;
     [SerializeField] private float spawnBalloonTime = 2f;
     [SerializeField] private float initialAltitude = 10f;
@@ -55,7 +56,10 @@ public class SpawnManager : MonoBehaviour {
         spawnPoint.z = Random.Range(startingPoint.y, endingPoint.y);
         spawnPoint.y = initialAltitude;
 
-        Instantiate(childPrefab, spawnPoint, Quaternion.identity, childsContainer.transform);
+        float spawnMass = Random.Range(childMassRange.x, childMassRange.y);
+
+        GameObject kid = Instantiate(childPrefab, spawnPoint, Quaternion.identity, childsContainer.transform);
+        kid.GetComponent<KidController>().SetKidMass(spawnMass);
 
         yield return new WaitForSeconds(spawnChildTime);
 

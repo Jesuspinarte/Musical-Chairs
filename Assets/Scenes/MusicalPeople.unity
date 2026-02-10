@@ -1104,6 +1104,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingPoint: {x: -10, y: -10}
   endingPoint: {x: 10, y: 10}
+  childMassRange: {x: 1, y: 20}
   spawnChildTime: 2
   spawnBalloonTime: 2
   initialAltitude: 10
