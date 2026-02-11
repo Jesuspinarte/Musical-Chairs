@@ -41,6 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8443521761252232260}
   - component: {fileID: 683552579042998595}
+  - component: {fileID: 444669522607848533}
   - component: {fileID: 4939878652532155884}
   - component: {fileID: 3494642207040700452}
   m_Layer: 0
@@ -85,6 +86,22 @@ MonoBehaviour:
   maxMovementSpeed: 10
   rotationSpeed: 0.15
   childPosition: {fileID: 8391553934813526222}
+--- !u!114 &444669522607848533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3363079089190627163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e401e9bf9463fb04a86b4fbc7492ab71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerAction: {fileID: 0}
+  powerToUse: 0
+  currentPower: 0
+  isSearchingPower: 0
 --- !u!54 &4939878652532155884
 Rigidbody:
   m_ObjectHideFlags: 0

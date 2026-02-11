@@ -1,4 +1,4 @@
 public enum EnumPlayerID {
-    player1,
-    player2
+    PLAYER1,
+    PLAYER2
 }

@@ -10,7 +10,7 @@ public class SpawnManager : MonoBehaviour {
 
     [Header("Spawn Settings")]
     [SerializeField] private Vector2 childMassRange = Vector2.one;
-    [SerializeField] private float spawnChildTime = 2f;
+    [SerializeField] private float spawnChildTime = 3f;
     [SerializeField] private float spawnBalloonTime = 2f;
     [SerializeField] private float initialAltitude = 10f;
 
@@ -77,6 +77,16 @@ public class SpawnManager : MonoBehaviour {
         if (balloonPrefab == null) yield return null;
         if (balloonsContainer == null) yield return null;
 
+        Vector3 spawnPoint = Vector3.zero;
+
+        spawnPoint.x = Random.Range(startingPoint.x, endingPoint.x);
+        spawnPoint.z = Random.Range(startingPoint.y, endingPoint.y);
+        spawnPoint.y = initialAltitude;
+
+        Instantiate(balloonPrefab, spawnPoint, Quaternion.identity, balloonsContainer.transform);
+
         yield return new WaitForSeconds(spawnBalloonTime);
+
+        StartCoroutine(SpawnBalloons());
     }
 }

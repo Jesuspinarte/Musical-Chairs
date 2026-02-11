@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI player1ScoreText;
     [SerializeField] private TextMeshProUGUI player2ScoreText;
 
+    [Header("PowerManager")]
+    [SerializeField] private float timeToGetPower = 0.5f;
+
     /************** HOOKS **************/
 
     public static GameManager Instance {
@@ -27,13 +30,13 @@ public class GameManager : MonoBehaviour {
     public void SetPlayerScoreText(EnumPlayerID playerID, int score) {
 
         switch (playerID) {
-            case EnumPlayerID.player1:
+            case EnumPlayerID.PLAYER1:
                 if (player1ScoreText == null) return;
                 player1ScoreText.text = score.ToString();
 
                 break;
 
-            case EnumPlayerID.player2:
+            case EnumPlayerID.PLAYER2:
                 if (player2ScoreText == null) return;
                 player2ScoreText.text = score.ToString();
 
@@ -42,5 +45,9 @@ public class GameManager : MonoBehaviour {
             default:
                 break;
         }
+    }
+
+    public float GetTimeToGetPower() {
+        return timeToGetPower;
     }
 }

@@ -346,6 +346,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 98047217}
     m_Modifications:
+    - target: {fileID: 444669522607848533, guid: cb94a1430c6762e44bac938bd7e2d56b, type: 3}
+      propertyPath: powerAction
+      value: 
+      objectReference: {fileID: -6677670222143801325, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     - target: {fileID: 683552579042998595, guid: cb94a1430c6762e44bac938bd7e2d56b, type: 3}
       propertyPath: playerId
       value: 1
@@ -750,7 +754,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4605788831703574426, guid: d7de06b3436749f4aa6732c74b63f795, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.5
+      value: 8.5
       objectReference: {fileID: 0}
     - target: {fileID: 4605788831703574426, guid: d7de06b3436749f4aa6732c74b63f795, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1075,16 +1079,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 859b5361c2a5c9f45a862434130d342f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingPoint: {x: -10, y: -10}
-  endingPoint: {x: 10, y: 10}
+  startingPoint: {x: -8, y: -8}
+  endingPoint: {x: 8, y: 8}
   childMassRange: {x: 1, y: 20}
-  spawnChildTime: 2
-  spawnBalloonTime: 2
+  spawnChildTime: 1
+  spawnBalloonTime: 1
   initialAltitude: 10
   childsContainer: {fileID: 837272864}
   balloonsContainer: {fileID: 985728651}
   childPrefab: {fileID: 8059344655558736545, guid: 6cdd2b284ac103b4a9ee0843f656c9d0, type: 3}
-  balloonPrefab: {fileID: 0}
+  balloonPrefab: {fileID: 8969380168205421764, guid: c5d007c8804982d4bbbf48c40f8bd02a, type: 3}
 --- !u!1 &830170071
 GameObject:
   m_ObjectHideFlags: 0
@@ -2054,6 +2058,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player1ScoreText: {fileID: 830170073}
   player2ScoreText: {fileID: 2081841518}
+  timeToGetPower: 1
 --- !u!1 &2055438015
 GameObject:
   m_ObjectHideFlags: 0
@@ -2396,7 +2401,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4605788831703574426, guid: d7de06b3436749f4aa6732c74b63f795, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.5
+      value: -8.5
       objectReference: {fileID: 0}
     - target: {fileID: 4605788831703574426, guid: d7de06b3436749f4aa6732c74b63f795, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2459,6 +2464,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 98047217}
     m_Modifications:
+    - target: {fileID: 444669522607848533, guid: cb94a1430c6762e44bac938bd7e2d56b, type: 3}
+      propertyPath: powerAction
+      value: 
+      objectReference: {fileID: 1120369429361536294, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     - target: {fileID: 683552579042998595, guid: cb94a1430c6762e44bac938bd7e2d56b, type: 3}
       propertyPath: maxMovementSpeed
       value: 12

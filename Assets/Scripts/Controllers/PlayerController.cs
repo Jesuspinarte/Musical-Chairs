@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -19,7 +20,6 @@ public class PlayerController : MonoBehaviour {
     private Transform _collecteKid = null;
     private float _initialLinearDamping = 0f;
     private Rigidbody _rb;
-
 
     /************** HOOKS **************/
 
