@@ -76,7 +76,7 @@ public class KidController : MonoBehaviour {
         _rb.mass = mass;
     }
 
-    public float GetKidMas() {
+    public float GetKidMass() {
         return _rb.mass;
     }
 

@@ -69,5 +69,6 @@
     },
     "dotnet.defaultSolution": "Theme II - The Greatest Tournament.slnx",
     "dotnet.enableWorkspaceBasedDevelopment": false,
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "editor.codeLens": false
 }

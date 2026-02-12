@@ -1,5 +1,11 @@
 {
   "dependencies": {
+    "com.jesuspinarte.text.utilities": {
+      "version": "file:D:/Game Dev/Custom Unity Packages/com.jesuspinarte.text.utilities",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
     "com.unity.ai.navigation": {
       "version": "2.0.9",
       "depth": 0,

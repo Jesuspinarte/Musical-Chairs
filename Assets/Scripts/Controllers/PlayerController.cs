@@ -12,20 +12,35 @@ public class PlayerController : MonoBehaviour {
   [SerializeField] private float acceleration = 50f;
   [SerializeField] private float maxMovementSpeed = 10f;
   [SerializeField] private float rotationSpeed = 0.15f;
+  [SerializeField] private float dampingModifier = .65f;
 
   [Header("Collectable Settings")]
   [SerializeField] private Transform childPosition; // Where the child will be when it's collected
 
   private Vector2 _movementInput = Vector3.zero;
   private Transform _collecteKid = null;
-  private float _initialLinearDamping = 0f;
   private Rigidbody _rb;
+
+  // Initial values
+  [Header("DEBUG VARIABLES")]
+  [SerializeField] private int _maxCapacity = 1;
+  [SerializeField] private int _initialMaxCapacity = 1;
+  [SerializeField] private float _initialAcceleration;
+  [SerializeField] private float _forceMultiplier = 1f;
+  [SerializeField] private float _initialMaxMovementSpeed;
+  [SerializeField] private float _initialLinearDamping = 0f;
 
   /************** HOOKS **************/
 
   private void Awake() {
     _rb = GetComponent<Rigidbody>();
+
+
+    _initialMaxCapacity = 1;
+    _initialAcceleration = acceleration;
     _initialLinearDamping = _rb.linearDamping;
+    _forceMultiplier = 1f;
+    _initialMaxMovementSpeed = maxMovementSpeed;
   }
 
   private void OnEnable() {
@@ -79,7 +94,7 @@ public class PlayerController : MonoBehaviour {
 
   public void SitKid(Transform kid) {
     _collecteKid = kid;
-    _rb.linearDamping = kid.GetComponent<KidController>().GetKidMas() * .75f;
+    _rb.linearDamping = kid.GetComponent<KidController>().GetKidMass() * dampingModifier * _forceMultiplier;
   }
 
   public EnumPlayerID GetPlayerID() {
@@ -88,13 +103,40 @@ public class PlayerController : MonoBehaviour {
 
   public KidController DropKid(Transform collectionPoint) {
     if (_collecteKid == null) return null;
-    KidController kidController = null;
-
     KidController kid = _collecteKid.GetComponent<KidController>();
-    kidController = kid.DetatchFromPlayer(collectionPoint);
+    KidController kidController = kid.DetatchFromPlayer(collectionPoint);
+
     _collecteKid = null;
     _rb.linearDamping = _initialLinearDamping;
 
     return kidController;
+  }
+
+  public void ResetPowerProperties() {
+    _maxCapacity = _initialMaxCapacity;
+    _rb.linearDamping = _rb.linearDamping / _forceMultiplier; // Resets force
+
+    acceleration = _initialAcceleration;
+    maxMovementSpeed = _initialMaxMovementSpeed;
+    _forceMultiplier = 1f;
+  }
+
+  public void BeStronger(float newForceMultiplier) {
+    if (newForceMultiplier == 0) {
+      Debug.LogError("ForceMultiplier CANNOT be ZERO (0)");
+      return;
+    }
+
+    _forceMultiplier = newForceMultiplier;
+    _rb.linearDamping = _rb.linearDamping * _forceMultiplier; // Changes force
+  }
+
+  public void BeFaster(float newMaxMovementSpeed, float newAccelerationValue) {
+    maxMovementSpeed = newMaxMovementSpeed;
+    acceleration = newAccelerationValue;
+  }
+
+  public void BeGreedy(int newMaxCapacity) {
+    _maxCapacity = newMaxCapacity;
   }
 }

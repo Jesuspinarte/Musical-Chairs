@@ -1,4 +1,4 @@
-public enum EnumPowers {
+public enum EnumPower {
   NONE = 0,
   FORCE = 1,
   MAGNET = 2,

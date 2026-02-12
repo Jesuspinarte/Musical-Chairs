@@ -9,11 +9,12 @@ public class PowerController : MonoBehaviour {
   [SerializeField] InputActionReference powerAction;
 
   [Header("Debug Variables")]
-  [SerializeField] private EnumPowers powerToUse;
-  [SerializeField] private EnumPowers currentPower;
+  [SerializeField] private EnumPower powerToUse;
+  [SerializeField] private EnumPower currentPower;
   [SerializeField] private bool isSearchingPower;
 
-  private int totalPowersSize = 0;
+  private float _powerTimer = 0f;
+  private PlayerController _playerController;
 
   /************** HOOKS **************/
 
@@ -21,23 +22,25 @@ public class PowerController : MonoBehaviour {
     if (powerAction == null) return;
 
     powerAction.action.Enable();
-    powerAction.action.started += UsePower;
+    powerAction.action.started += OnUsePower;
   }
 
   private void OnDisable() {
     if (powerAction == null) return;
 
     powerAction.action.Disable();
-    powerAction.action.started -= UsePower;
+    powerAction.action.started -= OnUsePower;
   }
 
   private void Awake() {
-    totalPowersSize = System.Enum.GetValues(typeof(EnumPowers)).Length;
+    _playerController = GetComponent<PlayerController>();
+    GameManager.Instance.SetPlayerPowerText(_playerController.GetPlayerID(), powerToUse.ToString());
   }
 
   private void Update() {
     if (isSearchingPower) {
-      powerToUse = (EnumPowers)Random.Range(1, totalPowersSize);
+      powerToUse = (EnumPower)Random.Range(1, PowerManager.Instance.GetTotalPowersSize());
+      UpdatePowerText();
     }
   }
 
@@ -48,19 +51,98 @@ public class PowerController : MonoBehaviour {
     isSearchingPower = false;
   }
 
-  private void UsePower(CallbackContext ctx) {
-    if (powerToUse == EnumPowers.NONE) return;
+  private IEnumerator OnPowerFinish() {
+    yield return new WaitForSeconds(_powerTimer);
+
+    powerToUse = EnumPower.NONE;
+    ResetPlayerStats();
+    UpdatePowerText();
+    StopPowerAnimationText();
+  }
+
+  private void StartPowerAnimationText() {
+    GameManager.Instance.AnimatePowerText(_playerController.GetPlayerID());
+  }
+
+  private void StopPowerAnimationText() {
+    GameManager.Instance.ResetPowerTextAnimation(_playerController.GetPlayerID());
+  }
+
+  private void UpdatePowerText() {
+    GameManager.Instance.SetPlayerPowerText(_playerController.GetPlayerID(), PowerManager.Instance.GetPowerName(powerToUse));
+  }
+
+  private void ResetPlayerStats() {
+    if (_playerController == null) return;
+    _playerController.ResetPowerProperties();
+  }
+
+  private void OnUsePower(CallbackContext ctx) {
+    if (powerToUse == EnumPower.NONE) return;
     if (isSearchingPower == true) return;
 
     currentPower = powerToUse;
-    powerToUse = EnumPowers.NONE;
+
+    OnPowerActivated();
+  }
+
+  private void OnPowerActivated() {
+    if (_playerController == null) return;
+
+    bool isPowerValid = true;
+
+    switch (currentPower) {
+      case EnumPower.NONE:
+        isPowerValid = false;
+        break;
+
+      case EnumPower.FORCE:
+        (float forceMultiplier, float forceTimer) = PowerManager.Instance.GetForcePowerValue();
+        _powerTimer = forceTimer;
+        _playerController.BeStronger(forceMultiplier);
+        break;
+
+      case EnumPower.MAGNET:
+        (int newMaxCapacity, float magnetTimer) = PowerManager.Instance.GetMaxMagnetCapacity();
+        _powerTimer = magnetTimer;
+        _playerController.BeGreedy(newMaxCapacity);
+        break;
+
+      case EnumPower.SPEED:
+        (float maxMovementSpeedValue, float accelerationValue, float speedTimer) = PowerManager.Instance.GetSpeedPowerValue();
+        _powerTimer = speedTimer;
+        _playerController.BeFaster(maxMovementSpeedValue, accelerationValue);
+        break;
+
+      default:
+        isPowerValid = false;
+        break;
+    }
+
+    if (isPowerValid) {
+      StartPowerAnimationText();
+      StartCoroutine(OnPowerFinish());
+    }
   }
 
   /************** PUBLIC **************/
 
   public void SetPowerToUse() {
-    if (powerToUse != EnumPowers.NONE) return;
+    if (powerToUse != EnumPower.NONE) return;
 
     StartCoroutine(GetRandmPowerToUse());
+  }
+
+  /************** DEBUG **************/
+  private void GreenLog(string logText) {
+    Debug.Log($"<color=#a6e69a>{logText}</color>");
+  }
+
+  private void BlueLog(string logText) {
+    Debug.Log($"<color=#52b8cc>{logText}</color>");
+  }
+
+  private void OrangeLog(string logText) {
+    Debug.Log($"<color=#d18547>{logText}</color>");
   }
 }

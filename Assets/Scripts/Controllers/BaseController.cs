@@ -17,7 +17,7 @@ public class BaseController : MonoBehaviour {
       KidController kid = player.DropKid(collectionPoint);
 
       if (kid != null) {
-        score += (int)Mathf.Ceil(kid.GetKidMas());
+        score += (int)Mathf.Ceil(kid.GetKidMass());
         GameManager.Instance.SetPlayerScoreText(playerOwner, score);
       }
     }
