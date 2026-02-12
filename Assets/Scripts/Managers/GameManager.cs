@@ -2,52 +2,52 @@ using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
-    private static GameManager _instance;
+  private static GameManager _instance;
 
-    [Header("Text References")]
-    [SerializeField] private TextMeshProUGUI player1ScoreText;
-    [SerializeField] private TextMeshProUGUI player2ScoreText;
+  [Header("Text References")]
+  [SerializeField] private TextMeshProUGUI player1ScoreText;
+  [SerializeField] private TextMeshProUGUI player2ScoreText;
 
-    [Header("PowerManager")]
-    [SerializeField] private float timeToGetPower = 0.5f;
+  [Header("PowerManager")]
+  [SerializeField] private float timeToGetPower = 0.5f;
 
-    /************** HOOKS **************/
+  /************** HOOKS **************/
 
-    public static GameManager Instance {
-        get {
-            if (_instance == null) {
-                _instance = FindFirstObjectByType<GameManager>();
-                if (_instance == null) {
-                    GameObject go = new GameObject("GameManager");
-                    _instance = go.AddComponent<GameManager>();
-                }
-            }
-            return _instance;
+  public static GameManager Instance {
+    get {
+      if (_instance == null) {
+        _instance = FindFirstObjectByType<GameManager>();
+        if (_instance == null) {
+          GameObject go = new GameObject("GameManager");
+          _instance = go.AddComponent<GameManager>();
         }
+      }
+      return _instance;
     }
+  }
 
-    /************** PUBLIC **************/
-    public void SetPlayerScoreText(EnumPlayerID playerID, int score) {
+  /************** PUBLIC **************/
+  public void SetPlayerScoreText(EnumPlayerID playerID, int score) {
 
-        switch (playerID) {
-            case EnumPlayerID.PLAYER1:
-                if (player1ScoreText == null) return;
-                player1ScoreText.text = score.ToString();
+    switch (playerID) {
+      case EnumPlayerID.PLAYER1:
+        if (player1ScoreText == null) return;
+        player1ScoreText.text = score.ToString();
 
-                break;
+        break;
 
-            case EnumPlayerID.PLAYER2:
-                if (player2ScoreText == null) return;
-                player2ScoreText.text = score.ToString();
+      case EnumPlayerID.PLAYER2:
+        if (player2ScoreText == null) return;
+        player2ScoreText.text = score.ToString();
 
-                break;
+        break;
 
-            default:
-                break;
-        }
+      default:
+        break;
     }
+  }
 
-    public float GetTimeToGetPower() {
-        return timeToGetPower;
-    }
+  public float GetTimeToGetPower() {
+    return timeToGetPower;
+  }
 }

@@ -4,97 +4,97 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour {
 
-    [Header("Player Settings")]
-    [SerializeField] EnumPlayerID playerId;
-    [SerializeField] InputActionReference moveAction;
+  [Header("Player Settings")]
+  [SerializeField] EnumPlayerID playerId;
+  [SerializeField] InputActionReference moveAction;
 
-    [Header("Movement Settings")]
-    [SerializeField] private float acceleration = 50f;
-    [SerializeField] private float maxMovementSpeed = 10f;
-    [SerializeField] private float rotationSpeed = 0.15f;
+  [Header("Movement Settings")]
+  [SerializeField] private float acceleration = 50f;
+  [SerializeField] private float maxMovementSpeed = 10f;
+  [SerializeField] private float rotationSpeed = 0.15f;
 
-    [Header("Collectable Settings")]
-    [SerializeField] private Transform childPosition; // Where the child will be when it's collected
+  [Header("Collectable Settings")]
+  [SerializeField] private Transform childPosition; // Where the child will be when it's collected
 
-    private Vector2 _movementInput = Vector3.zero;
-    private Transform _collecteKid = null;
-    private float _initialLinearDamping = 0f;
-    private Rigidbody _rb;
+  private Vector2 _movementInput = Vector3.zero;
+  private Transform _collecteKid = null;
+  private float _initialLinearDamping = 0f;
+  private Rigidbody _rb;
 
-    /************** HOOKS **************/
+  /************** HOOKS **************/
 
-    private void Awake() {
-        _rb = GetComponent<Rigidbody>();
-        _initialLinearDamping = _rb.linearDamping;
+  private void Awake() {
+    _rb = GetComponent<Rigidbody>();
+    _initialLinearDamping = _rb.linearDamping;
+  }
+
+  private void OnEnable() {
+    if (moveAction != null) moveAction.action.Enable();
+  }
+
+  private void OnDisable() {
+    if (moveAction != null) moveAction.action.Disable();
+  }
+
+  private void Update() {
+    GetMovement();
+  }
+
+  private void FixedUpdate() {
+    Vector3 flatVelocity;
+    Vector3 newDirection = new Vector3(_movementInput.x, 0f, _movementInput.y).normalized;
+
+    if (newDirection.magnitude > .1f) {
+      _rb.AddForce(newDirection * acceleration, ForceMode.Acceleration);
     }
 
-    private void OnEnable() {
-        if (moveAction != null) moveAction.action.Enable();
+    flatVelocity = new Vector3(_rb.linearVelocity.x, 0f, _rb.linearVelocity.z);
+
+    if (flatVelocity.magnitude > maxMovementSpeed) {
+      Vector3 limitedVel = flatVelocity.normalized * maxMovementSpeed;
+      _rb.linearVelocity = new Vector3(limitedVel.x, _rb.linearVelocity.y, limitedVel.z);
     }
 
-    private void OnDisable() {
-        if (moveAction != null) moveAction.action.Disable();
+    if (flatVelocity.magnitude > .5f) {
+      transform.forward = Vector3.Slerp(transform.forward, flatVelocity.normalized, rotationSpeed);
     }
+  }
 
-    private void Update() {
-        GetMovement();
-    }
+  /************** PRIVATE **************/
 
-    private void FixedUpdate() {
-        Vector3 flatVelocity;
-        Vector3 newDirection = new Vector3(_movementInput.x, 0f, _movementInput.y).normalized;
+  private void GetMovement() {
+    if (_movementInput == null) return;
+    _movementInput = moveAction.action.ReadValue<Vector2>();
+  }
 
-        if (newDirection.magnitude > .1f) {
-            _rb.AddForce(newDirection * acceleration, ForceMode.Acceleration);
-        }
+  /************** PUBLIC **************/
+  public Transform GetSittingPoint() {
+    if (childPosition == null) return null;
+    return childPosition;
+  }
 
-        flatVelocity = new Vector3(_rb.linearVelocity.x, 0f, _rb.linearVelocity.z);
+  public bool HasSittingKid() {
+    return _collecteKid != null;
+  }
 
-        if (flatVelocity.magnitude > maxMovementSpeed) {
-            Vector3 limitedVel = flatVelocity.normalized * maxMovementSpeed;
-            _rb.linearVelocity = new Vector3(limitedVel.x, _rb.linearVelocity.y, limitedVel.z);
-        }
+  public void SitKid(Transform kid) {
+    _collecteKid = kid;
+    _rb.linearDamping = kid.GetComponent<KidController>().GetKidMas() * .75f;
+  }
 
-        if (flatVelocity.magnitude > .5f) {
-            transform.forward = Vector3.Slerp(transform.forward, flatVelocity.normalized, rotationSpeed);
-        }
-    }
+  public EnumPlayerID GetPlayerID() {
+    return playerId;
+  }
 
-    /************** PRIVATE **************/
+  public KidController DropKid(Transform collectionPoint) {
+    if (_collecteKid == null) return null;
+    KidController kidController = null;
 
-    private void GetMovement() {
-        if (_movementInput == null) return;
-        _movementInput = moveAction.action.ReadValue<Vector2>();
-    }
+    KidController kid = _collecteKid.GetComponent<KidController>();
+    kidController = kid.DetatchFromPlayer(collectionPoint);
+    _collecteKid = null;
+    _rb.linearDamping = _initialLinearDamping;
 
-    /************** PUBLIC **************/
-    public Transform GetSittingPoint() {
-        if (childPosition == null) return null;
-        return childPosition;
-    }
-
-    public bool HasSittingKid() {
-        return _collecteKid != null;
-    }
-
-    public void SitKid(Transform kid) {
-        _collecteKid = kid;
-        _rb.linearDamping = kid.GetComponent<KidController>().GetKidMas() * .75f;
-    }
-
-    public EnumPlayerID GetPlayerID() {
-        return playerId;
-    }
-
-    public KidController DropKid(Transform collectionPoint) {
-        if (_collecteKid == null) return null;
-        KidController kidController = null;
-
-        KidController kid = _collecteKid.GetComponent<KidController>();
-        kidController = kid.DetatchFromPlayer(collectionPoint);
-        _collecteKid = null;
-        _rb.linearDamping = _initialLinearDamping;
-
-        return kidController;
-    }
+    return kidController;
+  }
 }
