@@ -2649,6 +2649,7 @@ MonoBehaviour:
   player2ScoreText: {fileID: 2081841518}
   player2PowerText: {fileID: 909706149}
   timeToGetPower: 1
+  textAnimationSpeed: 10
 --- !u!1 &2055438015
 GameObject:
   m_ObjectHideFlags: 0
