@@ -20,21 +20,22 @@ public class PlayerController : MonoBehaviour {
   private Vector2 _movementInput = Vector3.zero;
   private Transform _collecteKid = null;
   private Rigidbody _rb;
+  private MagnetAbility _magnetAbility;
 
   // Initial values
-  [Header("DEBUG VARIABLES")]
-  [SerializeField] private int _maxCapacity = 1;
-  [SerializeField] private int _initialMaxCapacity = 1;
-  [SerializeField] private float _initialAcceleration;
-  [SerializeField] private float _forceMultiplier = 1f;
-  [SerializeField] private float _initialMaxMovementSpeed;
-  [SerializeField] private float _initialLinearDamping = 0f;
+  private int _maxCapacity = 1;
+  private int _initialMaxCapacity = 1;
+  private float _initialMass = 1f;
+  private float _initialAcceleration;
+  private float _forceMultiplier = 1f;
+  private float _initialMaxMovementSpeed;
+  private float _initialLinearDamping = 0f;
 
   /************** HOOKS **************/
 
   private void Awake() {
     _rb = GetComponent<Rigidbody>();
-
+    _magnetAbility = GetComponent<MagnetAbility>();
 
     _initialMaxCapacity = 1;
     _initialAcceleration = acceleration;
@@ -101,15 +102,19 @@ public class PlayerController : MonoBehaviour {
     return playerId;
   }
 
-  public KidController DropKid(Transform collectionPoint) {
+  public KidController DropKid() {
     if (_collecteKid == null) return null;
     KidController kid = _collecteKid.GetComponent<KidController>();
-    KidController kidController = kid.DetatchFromPlayer(collectionPoint);
+    KidController kidController = kid.DetachFromPlayer();
 
-    _collecteKid = null;
-    _rb.linearDamping = _initialLinearDamping;
+    DetachKid();
 
     return kidController;
+  }
+
+  public void DetachKid() {
+    _collecteKid = null;
+    _rb.linearDamping = _initialLinearDamping;
   }
 
   public void ResetPowerProperties() {
@@ -138,5 +143,17 @@ public class PlayerController : MonoBehaviour {
 
   public void BeGreedy(int newMaxCapacity) {
     _maxCapacity = newMaxCapacity;
+
+    // _initialLinearDamping = _rb.linearDamping;
+    _initialMass = _rb.mass;
+    _rb.mass = 500f;
+    _magnetAbility.SetMaxCapacity(_maxCapacity);
+    _magnetAbility.EnableMagnet();
+  }
+
+  public void StopBeingGreedy() {
+    _rb.mass = _initialMass;
+    _maxCapacity = 1;
+    _magnetAbility.DisableMagnet();
   }
 }

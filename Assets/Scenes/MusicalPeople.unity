@@ -1157,13 +1157,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingPoint: {x: -8, y: -8}
   endingPoint: {x: 8, y: 8}
-  childMassRange: {x: 1, y: 20}
-  spawnChildTime: 1
+  kidMassRange: {x: 1, y: 20}
+  spawnKidTime: 1
   spawnBalloonTime: 1
   initialAltitude: 10
-  childsContainer: {fileID: 837272864}
+  kidsContainer: {fileID: 837272864}
   balloonsContainer: {fileID: 985728651}
-  childPrefab: {fileID: 8059344655558736545, guid: 6cdd2b284ac103b4a9ee0843f656c9d0, type: 3}
+  kidPrefab: {fileID: 8059344655558736545, guid: 6cdd2b284ac103b4a9ee0843f656c9d0, type: 3}
   balloonPrefab: {fileID: 8969380168205421764, guid: c5d007c8804982d4bbbf48c40f8bd02a, type: 3}
 --- !u!1 &830170071
 GameObject:
@@ -2650,6 +2650,8 @@ MonoBehaviour:
   player2PowerText: {fileID: 909706149}
   timeToGetPower: 1
   textAnimationSpeed: 10
+  _scoreP1: 0
+  _scoreP2: 0
 --- !u!1 &2055438015
 GameObject:
   m_ObjectHideFlags: 0

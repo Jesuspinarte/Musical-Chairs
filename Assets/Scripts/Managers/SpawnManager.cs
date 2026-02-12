@@ -9,18 +9,18 @@ public class SpawnManager : MonoBehaviour {
   [SerializeField] private Vector2 endingPoint = Vector2.zero;
 
   [Header("Spawn Settings")]
-  [SerializeField] private Vector2 childMassRange = Vector2.one;
-  [SerializeField] private float spawnChildTime = 3f;
+  [SerializeField] private Vector2 kidMassRange = Vector2.one;
+  [SerializeField] private float spawnKidTime = 3f;
   [SerializeField] private float spawnBalloonTime = 2f;
   [SerializeField] private float initialAltitude = 10f;
 
   [Header("Objects Containers")]
-  [SerializeField] private GameObject childsContainer;
+  [SerializeField] private GameObject kidsContainer;
   [SerializeField] private GameObject balloonsContainer;
 
   [Header("Spawn Objects")]
   [Tooltip("Collectable objects")]
-  [SerializeField] private GameObject childPrefab;
+  [SerializeField] private GameObject kidPrefab;
   [Tooltip("Item boxes")]
   [SerializeField] private GameObject balloonPrefab;
 
@@ -40,15 +40,15 @@ public class SpawnManager : MonoBehaviour {
   }
 
   private void Awake() {
-    StartCoroutine(SpawnChilds());
+    StartCoroutine(SpawnKids());
     StartCoroutine(SpawnBalloons());
   }
 
   /************** PRIVATE COROUTINES **************/
 
-  private IEnumerator SpawnChilds() {
-    if (childPrefab == null) yield return null;
-    if (childsContainer == null) yield return null;
+  private IEnumerator SpawnKids() {
+    if (kidPrefab == null) yield return null;
+    if (kidsContainer == null) yield return null;
 
     Vector3 spawnPoint = Vector3.zero;
 
@@ -56,18 +56,18 @@ public class SpawnManager : MonoBehaviour {
     spawnPoint.z = Random.Range(startingPoint.y, endingPoint.y);
     spawnPoint.y = initialAltitude;
 
-    float spawnMass = Random.Range(childMassRange.x, childMassRange.y);
-    float colorValue = 1f - ((spawnMass - 1f) / (childMassRange.y - 1f));
+    float spawnMass = Random.Range(kidMassRange.x, kidMassRange.y);
+    float colorValue = 1f - ((spawnMass - 1f) / (kidMassRange.y - 1f));
     Color newColor = new Color(colorValue, colorValue, colorValue, 1f);
 
-    KidController kidController = Instantiate(childPrefab, spawnPoint, Quaternion.identity, childsContainer.transform).GetComponent<KidController>();
+    KidController kidController = Instantiate(kidPrefab, spawnPoint, Quaternion.identity, kidsContainer.transform).GetComponent<KidController>();
 
     kidController.SetKidMass(spawnMass);
     kidController.UpdateKidColor(newColor);
 
-    yield return new WaitForSeconds(spawnChildTime);
+    yield return new WaitForSeconds(spawnKidTime);
 
-    StartCoroutine(SpawnChilds());
+    StartCoroutine(SpawnKids());
   }
 
   /**

@@ -8,10 +8,9 @@ public class PowerController : MonoBehaviour {
   [Header("Power Settings")]
   [SerializeField] InputActionReference powerAction;
 
-  [Header("Debug Variables")]
-  [SerializeField] private EnumPower powerToUse;
-  [SerializeField] private EnumPower currentPower;
-  [SerializeField] private bool isSearchingPower;
+  private EnumPower powerToUse;
+  private EnumPower currentPower;
+  private bool isSearchingPower;
 
   private float _powerTimer = 0f;
   private PlayerController _playerController;
@@ -58,6 +57,8 @@ public class PowerController : MonoBehaviour {
     ResetPlayerStats();
     UpdatePowerText();
     StopPowerAnimationText();
+
+    if (currentPower == EnumPower.MAGNET) _playerController.StopBeingGreedy();
   }
 
   private void StartPowerAnimationText() {

@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 8443521761252232260}
   - component: {fileID: 683552579042998595}
   - component: {fileID: 444669522607848533}
+  - component: {fileID: 2903395635503796948}
   - component: {fileID: 4939878652532155884}
   - component: {fileID: 3494642207040700452}
   m_Layer: 0
@@ -66,6 +67,7 @@ Transform:
   m_Children:
   - {fileID: 2918329478380921642}
   - {fileID: 8391553934813526222}
+  - {fileID: 9110495989252086197}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &683552579042998595
@@ -85,7 +87,14 @@ MonoBehaviour:
   acceleration: 50
   maxMovementSpeed: 10
   rotationSpeed: 0.15
+  dampingModifier: 0.65
   childPosition: {fileID: 8391553934813526222}
+  _maxCapacity: 1
+  _initialMaxCapacity: 1
+  _initialAcceleration: 0
+  _forceMultiplier: 1
+  _initialMaxMovementSpeed: 0
+  _initialLinearDamping: 0
 --- !u!114 &444669522607848533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,6 +111,28 @@ MonoBehaviour:
   powerToUse: 0
   currentPower: 0
   isSearchingPower: 0
+--- !u!114 &2903395635503796948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3363079089190627163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 281e67cf5b4c1e04b9ce07e4cd083e3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  magnetPoint: {fileID: 9110495989252086197}
+  kidsLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  magnetRadius: 3
+  attractionForce: 20
+  stickyDistance: 1.5
+  isActive: 0
+  maxCapacity: 10
+  kidsList: []
 --- !u!54 &4939878652532155884
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -259,3 +290,34 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -1829674632409497679, guid: ff6cb45341e76aa49af063d702374444, type: 3}
+--- !u!1 &6651991095657315315
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9110495989252086197}
+  m_Layer: 0
+  m_Name: MagnetPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9110495989252086197
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6651991095657315315}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -1.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8443521761252232260}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

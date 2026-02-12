@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
@@ -19,6 +20,10 @@ public class GameManager : MonoBehaviour {
   [Header("PowerManager")]
   [SerializeField] private float timeToGetPower = 0.5f;
   [SerializeField] private float textAnimationSpeed = 10f;
+
+
+  [SerializeField] private int _scoreP1 = 0;
+  [SerializeField] private int _scoreP2 = 0;
 
   /************** HOOKS **************/
 
@@ -116,5 +121,22 @@ public class GameManager : MonoBehaviour {
 
   public float GetTimeToGetPower() {
     return timeToGetPower;
+  }
+
+  public int AddScore(EnumPlayerID playerID, int score) {
+    switch (playerID) {
+      case EnumPlayerID.PLAYER1:
+        _scoreP1 += score;
+        SetPlayerScoreText(playerID, _scoreP1);
+
+        return _scoreP2;
+      case EnumPlayerID.PLAYER2:
+        _scoreP2 += score;
+        SetPlayerScoreText(playerID, _scoreP2);
+
+        return _scoreP2;
+      default:
+        return 0;
+    }
   }
 }
