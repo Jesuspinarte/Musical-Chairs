@@ -22,11 +22,24 @@ public class GameManager : MonoBehaviour {
   [SerializeField] private float textAnimationSpeed = 10f;
 
   [Header("GLOBAL SETTINGS")]
+
+  [Header("Time Settings")]
+  [SerializeField] private TextMeshProUGUI timerText;
+  [SerializeField] private TextMeshProUGUI roundText;
+  [Tooltip("In seconds")]
+  [SerializeField] private float coolDownTime = 10f;
+  [Tooltip("In seconds")]
+  [SerializeField] private float roundTime = 45f;
+  [SerializeField] private int totalRounds = 3;
+
   [Header("Player Settings")]
   [SerializeField] private float timeToRespawn = 3f;
 
   private int _scoreP1 = 0;
   private int _scoreP2 = 0;
+  private int _currentRound = 0;
+  private float _currentTime = 0f;
+  private bool _isCooldownTime = false;
 
   /************** HOOKS **************/
 
@@ -46,6 +59,35 @@ public class GameManager : MonoBehaviour {
   private void Awake() {
     _player1PowerAnimation = player1PowerText.GetComponent<BlinkText>();
     _player2PowerAnimation = player2PowerText.GetComponent<BlinkText>();
+  }
+
+  private void Start() {
+    _currentTime = coolDownTime;
+    _isCooldownTime = true;
+  }
+
+  private void Update() {
+    UpdateTimer();
+  }
+
+  /************** PRIVATE **************/
+  private void UpdateTimer() {
+    if (_isCooldownTime && _currentRound >= totalRounds) {
+      _currentTime = 0;
+      roundText.text = "GAME";
+      timerText.text = "OVER!";
+      return;
+    }
+    _currentTime -= Time.deltaTime;
+
+    if (_currentTime <= 0f) {
+      _currentTime = _isCooldownTime ? roundTime : coolDownTime;
+      _currentRound += _isCooldownTime ? 1 : 0;
+      _isCooldownTime = !_isCooldownTime;
+    }
+
+    timerText.text = $"{(int)Mathf.Ceil(_currentTime)}s";
+    roundText.text = _isCooldownTime ? "COOLDOWN" : $"ROUND {_currentRound}";
   }
 
   /************** PUBLIC **************/
