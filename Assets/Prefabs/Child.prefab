@@ -168,7 +168,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   triggerCollider: {fileID: 5576406416551580943}
   collisionCollider: {fileID: 6442133157509411216}
-  destroyTimer: 5
   rendererList:
   - {fileID: 3968292544365172686}
   - {fileID: 1264910355247122604}
@@ -179,6 +178,9 @@ MonoBehaviour:
   - {fileID: 4643858924689753496}
   - {fileID: 4009870064752330888}
   - {fileID: 3787024457911986750}
+  explosionForce: 50
+  explosionRadius: 2
+  upwardsForce: 3
 --- !u!1 &8282999319373532816
 GameObject:
   m_ObjectHideFlags: 0

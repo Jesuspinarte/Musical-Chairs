@@ -24,8 +24,6 @@ public class BombController : MonoBehaviour {
     foreach (Collider go in collisionList) {
       Rigidbody goRb = go.GetComponent<Rigidbody>();
 
-      Debug.Log($"Collided with: {go.name}");
-
       if (goRb == null) {
         if (go.transform.parent == null) continue;
 

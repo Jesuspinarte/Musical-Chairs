@@ -1,12 +1,16 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
+
+using static UnityEngine.InputSystem.InputAction;
 
 public class GameManager : MonoBehaviour {
   private static GameManager _instance;
 
   /************** SERIALIZED **************/
   [Header("GLOBAL SETTINGS")]
-  [Header("Player Settings")]
   [SerializeField] private float timeToRespawn = 3f;
+  [SerializeField] InputActionReference restartButton;
 
   /************** HOOKS **************/
 
@@ -23,8 +27,23 @@ public class GameManager : MonoBehaviour {
     }
   }
 
-  /************** PUBLIC **************/
+  private void OnEnable() {
+    if (restartButton != null) restartButton.action.Enable();
+    restartButton.action.performed += RestartGame;
+  }
 
+  private void OnDisable() {
+    if (restartButton != null) restartButton.action.Disable();
+    restartButton.action.performed -= RestartGame;
+  }
+
+  /************** PRIVATE **************/
+  private void RestartGame(CallbackContext ctx) {
+    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+  }
+
+
+  /************** PUBLIC **************/
   public float GetTimeToRespawn() {
     return timeToRespawn;
   }

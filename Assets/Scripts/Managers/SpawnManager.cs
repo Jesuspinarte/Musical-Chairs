@@ -24,7 +24,18 @@ public class SpawnManager : MonoBehaviour {
   [Tooltip("Item boxes")]
   [SerializeField] private GameObject balloonPrefab;
 
+  private bool _canSpawnKids = false;
+  private bool _canSpawnBalloons = true;
+
   /************** HOOKS **************/
+
+  private void OnEnable() {
+    TimeManager.OnCooldownChange += OnCooldownChange;
+  }
+
+  private void OnDisable() {
+    TimeManager.OnCooldownChange += OnCooldownChange;
+  }
 
   public static SpawnManager Instance {
     get {
@@ -40,7 +51,6 @@ public class SpawnManager : MonoBehaviour {
   }
 
   private void Awake() {
-    StartCoroutine(SpawnKids());
     StartCoroutine(SpawnBalloons());
   }
 
@@ -49,6 +59,7 @@ public class SpawnManager : MonoBehaviour {
   private IEnumerator SpawnKids() {
     if (kidPrefab == null) yield return null;
     if (kidsContainer == null) yield return null;
+    if (!_canSpawnKids) yield return null;
 
     Vector3 spawnPoint = Vector3.zero;
 
@@ -76,6 +87,7 @@ public class SpawnManager : MonoBehaviour {
   private IEnumerator SpawnBalloons() {
     if (balloonPrefab == null) yield return null;
     if (balloonsContainer == null) yield return null;
+    if (!_canSpawnBalloons) yield return null;
 
     Vector3 spawnPoint = Vector3.zero;
 
@@ -88,5 +100,22 @@ public class SpawnManager : MonoBehaviour {
     yield return new WaitForSeconds(spawnBalloonTime);
 
     StartCoroutine(SpawnBalloons());
+  }
+
+  /************** PRIVATE **************/
+  private void OnCooldownChange() {
+    if (TimeManager.Instance.IsCooldownTime()) {
+      _canSpawnKids = false;
+      StopAllCoroutines();
+      StartCoroutine(SpawnBalloons());
+    }
+    else {
+      if (TimeManager.Instance.GetCurrentRound() > 1) {
+        spawnKidTime /= 2;
+      }
+
+      _canSpawnKids = true;
+      StartCoroutine(SpawnKids());
+    }
   }
 }

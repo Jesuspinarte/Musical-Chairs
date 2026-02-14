@@ -65,4 +65,17 @@ public class ScoreManager : MonoBehaviour {
     }
   }
 
+  public int GetPlayer1Score() {
+    return _scoreP1;
+  }
+
+  public int GetPlayer2Score() {
+    return _scoreP1;
+  }
+
+  public EnumPlayerID? GetWinningPlayer() {
+    if (_scoreP1 == _scoreP2) return null;
+    if (_scoreP1 > _scoreP2) return EnumPlayerID.PLAYER1;
+    return EnumPlayerID.PLAYER2;
+  }
 }

@@ -10,8 +10,12 @@ public class KidController : MonoBehaviour {
   [SerializeField] private SphereCollider collisionCollider;
 
   [Header("Kid Settings")]
-  [SerializeField] private float destroyTimer = 5f;
   [SerializeField] private List<SkinnedMeshRenderer> rendererList;
+
+  [Header("Cooldown Settings")]
+  [SerializeField] private float explosionForce = 150f;
+  [SerializeField] private float explosionRadius = 2f;
+  [SerializeField] private float upwardsForce = 3f;
 
   private Rigidbody _rb;
   private bool _hasScored = false; // To prevent scoring twice or more
@@ -19,12 +23,21 @@ public class KidController : MonoBehaviour {
 
   /************** HOOKS **************/
 
+  private void OnEnable() {
+    TimeManager.OnCooldownChange += OnCooldownChange;
+  }
+
+  private void OnDisable() {
+    TimeManager.OnCooldownChange -= OnCooldownChange;
+  }
+
   private void Awake() {
     _rb = GetComponent<Rigidbody>();
   }
 
   private void Update() {
     SitOnChair();
+    DestroyWhenOutOfBoundaries();
   }
 
   private void OnTriggerEnter(Collider other) {
@@ -52,6 +65,25 @@ public class KidController : MonoBehaviour {
   }
 
   /************** PRIVATE **************/
+  private void DestroyWhenOutOfBoundaries() {
+    Vector3 pos = transform.position;
+    if (pos.x > 50 || pos.x < -50) Destroy(gameObject);
+    if (pos.y > 50 || pos.y < -50) Destroy(gameObject);
+    if (pos.z > 50 || pos.z < -50) Destroy(gameObject);
+  }
+
+  private void OnCooldownChange() {
+    if (!TimeManager.Instance.IsCooldownTime()) return;
+
+    float randomX = Random.Range(-1f, 1f);
+    float randomZ = Random.Range(-1f, 1f);
+
+    Vector3 randomDirection = new Vector3(randomX, 1f, randomZ).normalized;
+    _rb.AddExplosionForce(explosionForce, transform.position, explosionRadius, upwardsForce, ForceMode.Impulse);
+    _rb.AddForce(randomDirection * explosionForce * _rb.mass, ForceMode.Impulse); // Shoot
+    _rb.AddTorque(Random.insideUnitSphere * explosionForce, ForceMode.Impulse); // Rotate
+  }
+
   private void SitOnChair() {
     if (GetComponent<FixedJoint>()) return; // if it's affected by magnet, do not sit
     if (_chairOwner == null) return;
@@ -59,13 +91,6 @@ public class KidController : MonoBehaviour {
     Transform followPoint = _chairOwner.GetSittingPoint();
     transform.position = followPoint.position;
     transform.rotation = followPoint.rotation;
-  }
-
-  // TODO: Maybe play some particles here
-  private IEnumerator RemoveKidFromGame() {
-    yield return new WaitForSeconds(destroyTimer);
-
-    Destroy(gameObject);
   }
 
   /************** PUBLIC **************/
@@ -76,7 +101,6 @@ public class KidController : MonoBehaviour {
     transform.position = collectionPoint.position;
 
     // TODO: Maybe play some particles here
-    // StartCoroutine(RemoveKidFromGame());
     Destroy(gameObject);
 
     return GetComponent<KidController>();
