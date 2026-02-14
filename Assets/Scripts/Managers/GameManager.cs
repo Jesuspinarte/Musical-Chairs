@@ -21,9 +21,12 @@ public class GameManager : MonoBehaviour {
   [SerializeField] private float timeToGetPower = 0.5f;
   [SerializeField] private float textAnimationSpeed = 10f;
 
+  [Header("GLOBAL SETTINGS")]
+  [Header("Player Settings")]
+  [SerializeField] private float timeToRespawn = 3f;
 
-  [SerializeField] private int _scoreP1 = 0;
-  [SerializeField] private int _scoreP2 = 0;
+  private int _scoreP1 = 0;
+  private int _scoreP2 = 0;
 
   /************** HOOKS **************/
 
@@ -138,5 +141,9 @@ public class GameManager : MonoBehaviour {
       default:
         return 0;
     }
+  }
+
+  public float GetTimeToRespawn() {
+    return timeToRespawn;
   }
 }

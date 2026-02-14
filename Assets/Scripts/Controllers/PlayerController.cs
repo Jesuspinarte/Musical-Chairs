@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour {
   private float _forceMultiplier = 1f;
   private float _initialMaxMovementSpeed;
   private float _initialLinearDamping = 0f;
+  private Vector3 _initialPosition;
+  private bool _isDead = false;
 
   /************** HOOKS **************/
 
@@ -42,6 +44,7 @@ public class PlayerController : MonoBehaviour {
     _initialLinearDamping = _rb.linearDamping;
     _forceMultiplier = 1f;
     _initialMaxMovementSpeed = maxMovementSpeed;
+    _initialPosition = transform.position;
   }
 
   private void OnEnable() {
@@ -57,6 +60,8 @@ public class PlayerController : MonoBehaviour {
   }
 
   private void FixedUpdate() {
+    if (_isDead) return;
+
     Vector3 flatVelocity;
     Vector3 newDirection = new Vector3(_movementInput.x, 0f, _movementInput.y).normalized;
 
@@ -79,7 +84,7 @@ public class PlayerController : MonoBehaviour {
   /************** PRIVATE **************/
 
   private void GetMovement() {
-    if (_movementInput == null) return;
+    if (_movementInput == null || _isDead) return;
     _movementInput = moveAction.action.ReadValue<Vector2>();
   }
 
@@ -171,5 +176,26 @@ public class PlayerController : MonoBehaviour {
 
     Vector3 launchDirection = (transform.forward + Vector3.up * PowerManager.Instance.GetLaunchAngle()).normalized;
     rbBomb.AddForce(launchDirection * PowerManager.Instance.GetLaunchForce(), ForceMode.VelocityChange);
+  }
+
+  public void RespawnPlayer() {
+    if (!_isDead)
+      StartCoroutine(StartRespawnProcess());
+  }
+
+  /************** COROUTINES **************/
+  private IEnumerator StartRespawnProcess() {
+    if (_isDead) yield return null;
+
+    _isDead = true;
+    ResetPowerProperties();
+    DropKid();
+
+    yield return new WaitForSeconds(GameManager.Instance.GetTimeToRespawn());
+
+    _rb.linearVelocity = Vector3.zero;
+    transform.position = _initialPosition + Vector3.up;
+    transform.rotation = Quaternion.identity;
+    _isDead = false;
   }
 }

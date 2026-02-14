@@ -9,6 +9,7 @@ TagManager:
   - Base
   - CanChangeColor
   - Kid
+  - Balloon
   layers:
   - Default
   - TransparentFX
