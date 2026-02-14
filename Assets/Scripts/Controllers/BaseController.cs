@@ -19,7 +19,7 @@ public class BaseController : MonoBehaviour {
 
   /************** PUBLIC **************/
   public void AddScore(int score) {
-    GameManager.Instance.AddScore(playerOwner, score);
+    ScoreManager.Instance.AddScore(playerOwner, score);
   }
 
   public Transform GetCollectionPoint() {

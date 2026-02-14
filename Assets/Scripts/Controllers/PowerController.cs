@@ -33,7 +33,7 @@ public class PowerController : MonoBehaviour {
 
   private void Awake() {
     _playerController = GetComponent<PlayerController>();
-    GameManager.Instance.SetPlayerPowerText(_playerController.GetPlayerID(), powerToUse.ToString());
+    PowerManager.Instance.SetPlayerPowerText(_playerController.GetPlayerID(), powerToUse.ToString());
   }
 
   private void Update() {
@@ -46,7 +46,7 @@ public class PowerController : MonoBehaviour {
   /************** PRIVATE **************/
   private IEnumerator GetRandmPowerToUse() {
     isSearchingPower = true;
-    yield return new WaitForSeconds(GameManager.Instance.GetTimeToGetPower());
+    yield return new WaitForSeconds(PowerManager.Instance.GetTimeToGetPower());
     isSearchingPower = false;
   }
 
@@ -62,15 +62,15 @@ public class PowerController : MonoBehaviour {
   }
 
   private void StartPowerAnimationText() {
-    GameManager.Instance.AnimatePowerText(_playerController.GetPlayerID());
+    PowerManager.Instance.AnimatePowerText(_playerController.GetPlayerID());
   }
 
   private void StopPowerAnimationText() {
-    GameManager.Instance.ResetPowerTextAnimation(_playerController.GetPlayerID());
+    PowerManager.Instance.ResetPowerTextAnimation(_playerController.GetPlayerID());
   }
 
   private void UpdatePowerText() {
-    GameManager.Instance.SetPlayerPowerText(_playerController.GetPlayerID(), PowerManager.Instance.GetPowerName(powerToUse));
+    PowerManager.Instance.SetPlayerPowerText(_playerController.GetPlayerID(), PowerManager.Instance.GetPowerName(powerToUse));
   }
 
   private void ResetPlayerStats() {

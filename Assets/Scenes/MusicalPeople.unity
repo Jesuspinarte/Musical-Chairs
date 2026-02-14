@@ -1507,6 +1507,55 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &573520927
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 573520928}
+  - component: {fileID: 573520929}
+  m_Layer: 0
+  m_Name: TimeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &573520928
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 573520927}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 886066665}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &573520929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 573520927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b9e4938ed068234cab5dedf77d99c3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timerText: {fileID: 1977920476}
+  roundText: {fileID: 1928471018}
+  coolDownTime: 10
+  roundTime: 45
+  totalRounds: 3
 --- !u!1 &611477886
 GameObject:
   m_ObjectHideFlags: 0
@@ -1881,6 +1930,8 @@ Transform:
   - {fileID: 2003047407}
   - {fileID: 611477887}
   - {fileID: 1106049404}
+  - {fileID: 573520928}
+  - {fileID: 1134981575}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &907642952
@@ -2723,6 +2774,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d9c32f0d4a3e964e84e9ee301e619a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player1PowerText: {fileID: 1773043739}
+  player2PowerText: {fileID: 909706149}
+  timeToGetPower: 0.5
+  textAnimationSpeed: 10
   speedPowerValue: 30
   accelerationPowerValue: 175
   speedTimer: 6
@@ -2732,8 +2787,8 @@ MonoBehaviour:
   magnetTimer: 10
   bombPrefab: {fileID: 828205908293705498, guid: 7a650248b1ff6994382f918abab92a9e, type: 3}
   bombTimer: 0.5
-  launchForce: 5
-  launchAngle: 3
+  launchForce: 20
+  launchAngle: 0.005
 --- !u!4 &1119430838 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3594711500223847141, guid: 1b67db7c20c3c1147bffcec7a963d754, type: 3}
@@ -2815,6 +2870,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1125116285}
   m_CullTransparentMesh: 1
+--- !u!1 &1134981574
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1134981575}
+  - component: {fileID: 1134981576}
+  m_Layer: 0
+  m_Name: ScoreManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1134981575
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134981574}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 886066665}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1134981576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134981574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8f698cd420a8a943a15e89890b7991a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player1ScoreText: {fileID: 830170073}
+  player2ScoreText: {fileID: 2081841518}
 --- !u!1 &1181149504
 GameObject:
   m_ObjectHideFlags: 0
@@ -4053,17 +4154,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e7a9c47394f27e44a2d625f8680fe1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player1ScoreText: {fileID: 830170073}
-  player1PowerText: {fileID: 1773043739}
-  player2ScoreText: {fileID: 2081841518}
-  player2PowerText: {fileID: 909706149}
-  timeToGetPower: 1
-  textAnimationSpeed: 10
-  timerText: {fileID: 1977920476}
-  roundText: {fileID: 1928471018}
-  coolDownTime: 3
-  roundTime: 5
-  totalRounds: 3
   timeToRespawn: 3
 --- !u!1 &2055438015
 GameObject:

@@ -1,9 +1,24 @@
+using TMPro;
 using UnityEngine;
 
 public class PowerManager : MonoBehaviour {
   private static PowerManager _instance;
 
-  [Header("POWER SETTINGS")]
+  /************** SERIALIZED **************/
+  [Header("TEXT REFERENCES")]
+
+  [Header("Player 1")]
+  [SerializeField] private TextMeshProUGUI player1PowerText;
+  private BlinkText _player1PowerAnimation;
+
+  [Header("Player 2")]
+  [SerializeField] private TextMeshProUGUI player2PowerText;
+  private BlinkText _player2PowerAnimation;
+
+  [Header("Power Constraints")]
+  [SerializeField] private float timeToGetPower = 0.5f;
+  [SerializeField] private float textAnimationSpeed = 10f;
+
   [Header("Speed Power")]
   [SerializeField] private float speedPowerValue = 20f;
   [SerializeField] private float accelerationPowerValue = 20f;
@@ -43,6 +58,8 @@ public class PowerManager : MonoBehaviour {
 
   private void Awake() {
     _totalPowersSize = System.Enum.GetValues(typeof(EnumPower)).Length;
+    _player1PowerAnimation = player1PowerText.GetComponent<BlinkText>();
+    _player2PowerAnimation = player2PowerText.GetComponent<BlinkText>();
   }
 
   /************** PRIVATE **************/
@@ -66,6 +83,25 @@ public class PowerManager : MonoBehaviour {
 
   public (GameObject bombPrefab, float timer) GetBombPrefab() {
     return (bombPrefab, timer: bombTimer);
+  }
+
+  public void SetPlayerPowerText(EnumPlayerID playerID, string powerName) {
+    switch (playerID) {
+      case EnumPlayerID.PLAYER1:
+        if (player1PowerText == null) return;
+        player1PowerText.text = powerName;
+
+        break;
+
+      case EnumPlayerID.PLAYER2:
+        if (player2PowerText == null) return;
+        player2PowerText.text = powerName;
+
+        break;
+
+      default:
+        break;
+    }
   }
 
   public string GetPowerName(EnumPower power) {
@@ -94,5 +130,43 @@ public class PowerManager : MonoBehaviour {
 
   public float GetLaunchAngle() {
     return launchAngle;
+  }
+
+  public void AnimatePowerText(EnumPlayerID playerID) {
+    switch (playerID) {
+      case EnumPlayerID.PLAYER1:
+        _player1PowerAnimation.minAlpha = .2f;
+        _player1PowerAnimation.speed = textAnimationSpeed;
+        break;
+
+      case EnumPlayerID.PLAYER2:
+        _player2PowerAnimation.minAlpha = .2f;
+        _player2PowerAnimation.speed = textAnimationSpeed;
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  public void ResetPowerTextAnimation(EnumPlayerID playerID) {
+    switch (playerID) {
+      case EnumPlayerID.PLAYER1:
+        _player1PowerAnimation.minAlpha = 1f;
+        _player1PowerAnimation.speed = 1f;
+        break;
+
+      case EnumPlayerID.PLAYER2:
+        _player2PowerAnimation.minAlpha = 1f;
+        _player2PowerAnimation.speed = 1f;
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  public float GetTimeToGetPower() {
+    return timeToGetPower;
   }
 }
