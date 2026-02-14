@@ -126,6 +126,7 @@ public class PlayerController : MonoBehaviour {
     _forceMultiplier = 1f;
   }
 
+  // Strength ability
   public void BeStronger(float newForceMultiplier) {
     if (newForceMultiplier == 0) {
       Debug.LogError("ForceMultiplier CANNOT be ZERO (0)");
@@ -136,24 +137,39 @@ public class PlayerController : MonoBehaviour {
     _rb.linearDamping = _rb.linearDamping * _forceMultiplier; // Changes force
   }
 
+  // Speed ability
   public void BeFaster(float newMaxMovementSpeed, float newAccelerationValue) {
     maxMovementSpeed = newMaxMovementSpeed;
     acceleration = newAccelerationValue;
   }
 
+  // Start Magnet ability
   public void BeGreedy(int newMaxCapacity) {
     _maxCapacity = newMaxCapacity;
 
-    // _initialLinearDamping = _rb.linearDamping;
     _initialMass = _rb.mass;
     _rb.mass = 500f;
     _magnetAbility.SetMaxCapacity(_maxCapacity);
     _magnetAbility.EnableMagnet();
   }
 
+  // Stop Magnet ability
   public void StopBeingGreedy() {
     _rb.mass = _initialMass;
     _maxCapacity = 1;
     _magnetAbility.DisableMagnet();
+  }
+
+  // Launch Bomb
+  public void BeMad(GameObject bombPrefab) {
+    Vector3 spawnPosition = transform.position + transform.forward * 2f + Vector3.up * 1f;
+
+    GameObject bomb = Instantiate(bombPrefab, spawnPosition, transform.rotation);
+    Rigidbody rbBomb = bomb.GetComponent<Rigidbody>();
+
+    if (rbBomb == null) return;
+
+    Vector3 launchDirection = (transform.forward + Vector3.up * PowerManager.Instance.GetLaunchAngle()).normalized;
+    rbBomb.AddForce(launchDirection * PowerManager.Instance.GetLaunchForce(), ForceMode.VelocityChange);
   }
 }

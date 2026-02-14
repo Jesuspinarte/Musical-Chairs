@@ -19,6 +19,12 @@ public class PowerManager : MonoBehaviour {
   [SerializeField] private int maxMagnetCapacity = 10;
   [SerializeField] private float magnetTimer = 7f;
 
+  [Header("Bomb Power")]
+  [SerializeField] private GameObject bombPrefab;
+  [SerializeField] private float bombTimer = .5f;
+  [SerializeField] private float launchForce = 15f; // Fuerza del brazo
+  [SerializeField] private float launchAngle = 1f;
+
   private int _totalPowersSize = 0;
 
   /************** HOOKS **************/
@@ -35,7 +41,7 @@ public class PowerManager : MonoBehaviour {
     }
   }
 
-  public void Awake() {
+  private void Awake() {
     _totalPowersSize = System.Enum.GetValues(typeof(EnumPower)).Length;
   }
 
@@ -58,6 +64,10 @@ public class PowerManager : MonoBehaviour {
     return (value: maxMagnetCapacity, timer: magnetTimer);
   }
 
+  public (GameObject bombPrefab, float timer) GetBombPrefab() {
+    return (bombPrefab, timer: bombTimer);
+  }
+
   public string GetPowerName(EnumPower power) {
     switch (power) {
       case EnumPower.FORCE:
@@ -69,9 +79,20 @@ public class PowerManager : MonoBehaviour {
       case EnumPower.SPEED:
         return "BE FASTER!";
 
+      case EnumPower.BOMB:
+        return "BE MAD!!!";
+
       case EnumPower.NONE:
       default:
         return "-";
     }
+  }
+
+  public float GetLaunchForce() {
+    return launchForce;
+  }
+
+  public float GetLaunchAngle() {
+    return launchAngle;
   }
 }

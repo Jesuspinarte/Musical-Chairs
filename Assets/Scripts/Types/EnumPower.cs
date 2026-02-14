@@ -3,4 +3,5 @@ public enum EnumPower {
   FORCE = 1,
   MAGNET = 2,
   SPEED = 3,
+  BOMB = 4,
 }

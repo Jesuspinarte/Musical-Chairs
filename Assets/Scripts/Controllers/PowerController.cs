@@ -115,6 +115,12 @@ public class PowerController : MonoBehaviour {
         _playerController.BeFaster(maxMovementSpeedValue, accelerationValue);
         break;
 
+      case EnumPower.BOMB:
+        (GameObject bombPrefab, float bombTimer) = PowerManager.Instance.GetBombPrefab();
+        _powerTimer = bombTimer;
+        _playerController.BeMad(bombPrefab);
+        break;
+
       default:
         isPowerValid = false;
         break;
