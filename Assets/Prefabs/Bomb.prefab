@@ -123,8 +123,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionRadius: 3
-  explosionForce: 300
-  upwardsForce: 3
+  explosionForce: 500
+  upwardsForce: 30
   explotionParticles: {fileID: 0}
 --- !u!54 &5287218128444761254
 Rigidbody:

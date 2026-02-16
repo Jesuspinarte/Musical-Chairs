@@ -68,8 +68,9 @@ public class SpawnManager : MonoBehaviour {
     spawnPoint.y = initialAltitude;
 
     float spawnMass = Random.Range(kidMassRange.x, kidMassRange.y);
-    float colorValue = 1f - ((spawnMass - 1f) / (kidMassRange.y - 1f));
-    Color newColor = new Color(colorValue, colorValue, colorValue, 1f);
+    float percent = 1f - ((spawnMass - 1f) / (kidMassRange.y - 1f));
+    float colorValue = Mathf.Lerp(0.9f, 0.3f, percent);
+    Color newColor = new Color(colorValue, colorValue, colorValue);
 
     KidController kidController = Instantiate(kidPrefab, spawnPoint, Quaternion.identity, kidsContainer.transform).GetComponent<KidController>();
 
