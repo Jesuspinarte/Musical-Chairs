@@ -1,4 +1,5 @@
 using System.Collections;
+using FMODUnity;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -19,6 +20,10 @@ public class PlayerController : MonoBehaviour {
 
   [Header("Effects")]
   [SerializeField] private GameObject deathParticles;
+
+  [Header("Audio SFX")]
+  public EventReference sfxDeath;
+  public EventReference sfxRespawn;
 
   private Vector2 _movementInput = Vector3.zero;
   private Transform _collecteKid = null;
@@ -190,7 +195,10 @@ public class PlayerController : MonoBehaviour {
   private IEnumerator StartRespawnProcess() {
     if (_isDead) yield return null;
 
+    // Effects
+    RuntimeManager.PlayOneShot(sfxDeath, Vector3.zero);
     Instantiate(deathParticles, transform.position, Quaternion.identity);
+
     _isDead = true;
     ResetPowerProperties();
     DropKid();
@@ -202,5 +210,7 @@ public class PlayerController : MonoBehaviour {
     transform.position = _initialPosition + Vector3.up;
     transform.rotation = Quaternion.identity;
     _isDead = false;
+
+    RuntimeManager.PlayOneShot(sfxRespawn, Vector3.zero);
   }
 }

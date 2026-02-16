@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using FMODUnity;
 using UnityEngine;
 
 public class KidController : MonoBehaviour {
@@ -20,6 +21,9 @@ public class KidController : MonoBehaviour {
   [Header("Effects")]
   [SerializeField] private GameObject scoreParticles;
   [SerializeField] private GameObject explosionParticles;
+
+  [Header("Audio SFX")]
+  public EventReference sfxScore;
 
   private Rigidbody _rb;
   private bool _hasScored = false; // To prevent scoring twice or more
@@ -105,6 +109,7 @@ public class KidController : MonoBehaviour {
     Vector3 particlesPos = transform.position;
     particlesPos.y -= 1;
     Instantiate(scoreParticles, particlesPos, Quaternion.identity);
+    RuntimeManager.PlayOneShot(sfxScore, Vector3.zero);
 
     TextManager.Instance.DisplayKidScore(transform.position, GetKidScore().ToString(), playerID);
 

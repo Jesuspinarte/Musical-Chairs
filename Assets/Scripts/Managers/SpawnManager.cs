@@ -34,7 +34,7 @@ public class SpawnManager : MonoBehaviour {
   }
 
   private void OnDisable() {
-    TimeManager.OnCooldownChange += OnCooldownChange;
+    TimeManager.OnCooldownChange -= OnCooldownChange;
   }
 
   public static SpawnManager Instance {
@@ -118,5 +118,9 @@ public class SpawnManager : MonoBehaviour {
       _canSpawnKids = true;
       StartCoroutine(SpawnKids());
     }
+  }
+
+  private void OnDestroy() {
+    StopAllCoroutines();
   }
 }

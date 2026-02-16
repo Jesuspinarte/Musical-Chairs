@@ -183,6 +183,13 @@ MonoBehaviour:
   upwardsForce: 3
   scoreParticles: {fileID: 9157105887711914197, guid: 4c07f794fa9fe5742bdfe1bd24c9c0ae, type: 3}
   explosionParticles: {fileID: 4593184484909914552, guid: b1708699c4605144ab0e6bbdfafe5414, type: 3}
+  sfxScore:
+    Guid:
+      Data1: 341583693
+      Data2: 1127817702
+      Data3: -1660760385
+      Data4: -746590721
+    Path: event:/Sound FX/Kid_Score
 --- !u!1 &8282999319373532816
 GameObject:
   m_ObjectHideFlags: 0
