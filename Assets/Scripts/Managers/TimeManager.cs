@@ -1,4 +1,5 @@
 using System;
+using FMODUnity;
 using TMPro;
 using UnityEngine;
 
@@ -24,6 +25,9 @@ public class TimeManager : MonoBehaviour {
   [SerializeField] private GameObject gameOverParticles;
   [SerializeField] private GameObject cooldownParticles;
   [SerializeField] private GameObject playParticles;
+
+  [Header("Audio SFX")]
+  public EventReference sfxExplosionRound;
 
   private int _currentRound = 0;
   private float _currentTime = 0f;
@@ -68,6 +72,9 @@ public class TimeManager : MonoBehaviour {
     if (_lastIsCooldownTime == _isCooldownTime) return;
     _lastIsCooldownTime = _isCooldownTime;
     OnCooldownChange?.Invoke();
+
+    if (_isCooldownTime)
+      RuntimeManager.PlayOneShot(sfxExplosionRound, Vector3.zero);
   }
 
   private void UpdateTimer() {
@@ -99,6 +106,7 @@ public class TimeManager : MonoBehaviour {
 
       if (_currentParticles != null) Destroy(_currentParticles);
       _currentParticles = Instantiate(gameOverParticles, transform.position, Quaternion.identity);
+      MusicManager.Instance.ChangeMusic("GameOver");
 
       switch (winner) {
         case null:
@@ -126,6 +134,7 @@ public class TimeManager : MonoBehaviour {
       particlesPos.y += 3;
       _currentParticles = Instantiate(cooldownParticles, particlesPos, Quaternion.identity);
 
+      MusicManager.Instance.ChangeMusic("Cooldown");
       TextManager.Instance.DisplayCooldownText("BE COOL! CHILL OUT!");
       return;
     }
@@ -136,6 +145,23 @@ public class TimeManager : MonoBehaviour {
 
       if (_currentParticles != null) Destroy(_currentParticles);
       _currentParticles = Instantiate(playParticles, transform.position, Quaternion.identity);
+
+      switch (_currentRound) {
+        case 1:
+          MusicManager.Instance.ChangeMusic("Round1");
+          break;
+
+        case 2:
+          MusicManager.Instance.ChangeMusic("Round2");
+          break;
+
+        case 3:
+          MusicManager.Instance.ChangeMusic("Round3");
+          break;
+
+        default:
+          break;
+      }
 
       TextManager.Instance.DisplayPlayText("BE CRAAAAAAAZYYYYY!");
       return;

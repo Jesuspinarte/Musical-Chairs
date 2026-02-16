@@ -1,4 +1,5 @@
 using System.Collections;
+using FMODUnity;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,6 +13,9 @@ public class PowerController : MonoBehaviour {
   [SerializeField] private GameObject speedParticles;
   [SerializeField] private GameObject forceParticles;
   [SerializeField] private GameObject magnetParticles;
+
+  [Header("Audio SFX")]
+  public EventReference sfxPowerUse;
 
   private EnumPower powerToUse;
   private EnumPower currentPower;
@@ -68,6 +72,8 @@ public class PowerController : MonoBehaviour {
     StopPowerAnimationText();
 
     if (currentPower == EnumPower.MAGNET) _playerController.StopBeingGreedy();
+
+    currentPower = EnumPower.NONE;
   }
 
   private void StartPowerAnimationText() {
@@ -90,6 +96,7 @@ public class PowerController : MonoBehaviour {
   private void OnUsePower(CallbackContext ctx) {
     if (powerToUse == EnumPower.NONE) return;
     if (isSearchingPower == true) return;
+    if (currentPower != EnumPower.NONE) return;
 
     currentPower = powerToUse;
 
@@ -98,6 +105,8 @@ public class PowerController : MonoBehaviour {
 
   private void OnPowerActivated() {
     if (_playerController == null) return;
+
+    RuntimeManager.PlayOneShot(sfxPowerUse, Vector3.zero);
 
     bool isPowerValid = true;
 

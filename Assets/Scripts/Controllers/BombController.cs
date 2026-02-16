@@ -1,3 +1,4 @@
+using FMODUnity;
 using UnityEngine;
 
 public class BombController : MonoBehaviour {
@@ -7,6 +8,9 @@ public class BombController : MonoBehaviour {
   [SerializeField] private float explosionForce = 10f;
   [SerializeField] private float upwardsForce = 3f;
   [SerializeField] private GameObject explotionParticles;
+
+  [Header("Audio SFX")]
+  public EventReference sfxExplosion;
 
   /************** HOOKS **************/
   private void OnCollisionEnter(Collision collision) {
@@ -20,6 +24,8 @@ public class BombController : MonoBehaviour {
       particlesPos.y += 1;
       Instantiate(explotionParticles, particlesPos, Quaternion.identity);
     }
+
+    RuntimeManager.PlayOneShot(sfxExplosion, Vector3.zero);
 
     Collider[] collisionList = Physics.OverlapSphere(transform.position, explosionRadius);
 

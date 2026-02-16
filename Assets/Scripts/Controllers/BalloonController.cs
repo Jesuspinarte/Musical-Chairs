@@ -1,8 +1,12 @@
+using FMODUnity;
 using UnityEngine;
 
 public class BalloonController : MonoBehaviour {
   [Header("Effects")]
   [SerializeField] private GameObject collectParticles;
+
+  [Header("Audio SFX")]
+  public EventReference sfxCollection;
 
   /************** HOOKS **************/
   private void OnTriggerEnter(Collider other) {
@@ -10,6 +14,8 @@ public class BalloonController : MonoBehaviour {
       PowerController player = other.transform.GetComponent<PowerController>();
 
       Instantiate(collectParticles, transform.position, Quaternion.identity);
+      RuntimeManager.PlayOneShot(sfxCollection, Vector3.zero);
+
       player.SetPowerToUse();
       Destroy(gameObject);
     }

@@ -53,8 +53,6 @@ public class LegController : MonoBehaviour {
       _groundPoint = hit.point + (movementDirection * overshoot);
       _groundPoint.y += .15f; // Foot size
     }
-
-    // Debug.Log(Vector3.Distance(_groundPoint, ikTarget.position));
   }
 
   private IEnumerator Walk() {
