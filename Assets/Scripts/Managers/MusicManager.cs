@@ -38,9 +38,6 @@ public class MusicManager : MonoBehaviour {
 
   /************** PUBLIC **************/
   public void ChangeMusic(string newState) {
-    // musicInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     musicInstance.setParameterByNameWithLabel("Game_State", newState);
-    // musicInstance.start();
-    Debug.Log($"MusicManager: Changing to: {newState}");
   }
 }
