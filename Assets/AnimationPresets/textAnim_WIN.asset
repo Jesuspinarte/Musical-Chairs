@@ -15,7 +15,7 @@ MonoBehaviour:
   font: {fileID: 11400000, guid: 554d25ed6addaf34f9824d8cfe5a5d44, type: 2}
   textSize: 40
   alignment: 1
-  transitionDuration: 1.2
+  transitionDuration: 20
   perLetterDelay: 0.05
   invertAnimationOrder: 0
   initialSpacing: 24
