@@ -8,6 +8,11 @@ public class PowerController : MonoBehaviour {
   [Header("Power Settings")]
   [SerializeField] InputActionReference powerAction;
 
+  [Header("Effects")]
+  [SerializeField] private GameObject speedParticles;
+  [SerializeField] private GameObject forceParticles;
+  [SerializeField] private GameObject magnetParticles;
+
   private EnumPower powerToUse;
   private EnumPower currentPower;
   private bool isSearchingPower;
@@ -34,6 +39,10 @@ public class PowerController : MonoBehaviour {
   private void Awake() {
     _playerController = GetComponent<PlayerController>();
     PowerManager.Instance.SetPlayerPowerText(_playerController.GetPlayerID(), powerToUse.ToString());
+  }
+
+  private void Start() {
+    UpdatePowerText();
   }
 
   private void Update() {
@@ -100,18 +109,21 @@ public class PowerController : MonoBehaviour {
       case EnumPower.FORCE:
         (float forceMultiplier, float forceTimer) = PowerManager.Instance.GetForcePowerValue();
         _powerTimer = forceTimer;
+        Instantiate(forceParticles, transform.position, Quaternion.identity);
         _playerController.BeStronger(forceMultiplier);
         break;
 
       case EnumPower.MAGNET:
         (int newMaxCapacity, float magnetTimer) = PowerManager.Instance.GetMaxMagnetCapacity();
         _powerTimer = magnetTimer;
+        Instantiate(magnetParticles, transform.position, Quaternion.identity);
         _playerController.BeGreedy(newMaxCapacity);
         break;
 
       case EnumPower.SPEED:
         (float maxMovementSpeedValue, float accelerationValue, float speedTimer) = PowerManager.Instance.GetSpeedPowerValue();
         _powerTimer = speedTimer;
+        Instantiate(speedParticles, transform.position, Quaternion.identity);
         _playerController.BeFaster(maxMovementSpeedValue, accelerationValue);
         break;
 

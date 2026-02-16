@@ -181,6 +181,8 @@ MonoBehaviour:
   explosionForce: 50
   explosionRadius: 2
   upwardsForce: 3
+  scoreParticles: {fileID: 9157105887711914197, guid: 4c07f794fa9fe5742bdfe1bd24c9c0ae, type: 3}
+  explosionParticles: {fileID: 4593184484909914552, guid: b1708699c4605144ab0e6bbdfafe5414, type: 3}
 --- !u!1 &8282999319373532816
 GameObject:
   m_ObjectHideFlags: 0

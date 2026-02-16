@@ -1,11 +1,15 @@
 using UnityEngine;
 
 public class BalloonController : MonoBehaviour {
+  [Header("Effects")]
+  [SerializeField] private GameObject collectParticles;
+
   /************** HOOKS **************/
   private void OnTriggerEnter(Collider other) {
     if (other.transform.tag == "Player") {
       PowerController player = other.transform.GetComponent<PowerController>();
 
+      Instantiate(collectParticles, transform.position, Quaternion.identity);
       player.SetPowerToUse();
       Destroy(gameObject);
     }

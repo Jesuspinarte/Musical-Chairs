@@ -125,7 +125,7 @@ MonoBehaviour:
   explosionRadius: 3
   explosionForce: 500
   upwardsForce: 30
-  explotionParticles: {fileID: 0}
+  explotionParticles: {fileID: 5339739117810204693, guid: e7573c93b1917344ea5c82bb7673e2d2, type: 3}
 --- !u!54 &5287218128444761254
 Rigidbody:
   m_ObjectHideFlags: 0

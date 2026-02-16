@@ -18,14 +18,23 @@ public class TimeManager : MonoBehaviour {
   [SerializeField] private int totalRounds = 3;
 
   [Header("Text Settings")]
-  [SerializeField] private TextMeshProUGUI statusText;
   [SerializeField] private float statusStartGameDuration = 3f;
+
+  [Header("Effects")]
+  [SerializeField] private GameObject gameOverParticles;
+  [SerializeField] private GameObject cooldownParticles;
+  [SerializeField] private GameObject playParticles;
 
   private int _currentRound = 0;
   private float _currentTime = 0f;
   private bool _isCooldownTime = false;
   private bool _lastIsCooldownTime = false;
-  private BlinkText _statusTextSettings;
+
+  private bool _isWinTextDisplayed = false;
+  private bool _isCooldownTextDisplayed = false;
+  private bool _isPlayTextDisplayed = false;
+
+  private GameObject _currentParticles = null;
 
   /************** HOOKS **************/
 
@@ -40,10 +49,6 @@ public class TimeManager : MonoBehaviour {
       }
       return _instance;
     }
-  }
-
-  private void Awake() {
-    _statusTextSettings = statusText.GetComponent<BlinkText>();
   }
 
   private void Start() {
@@ -85,43 +90,54 @@ public class TimeManager : MonoBehaviour {
   }
 
   private void UpdateStatusText() {
-    if (IsGameOver()) {
+    if (_isWinTextDisplayed) return;
+
+
+    if (IsGameOver() && !_isWinTextDisplayed) {
       EnumPlayerID? winner = ScoreManager.Instance.GetWinningPlayer();
-      statusText.enabled = true;
-      _statusTextSettings.speed = 20f;
+      _isWinTextDisplayed = true;
+
+      if (_currentParticles != null) Destroy(_currentParticles);
+      _currentParticles = Instantiate(gameOverParticles, transform.position, Quaternion.identity);
 
       switch (winner) {
         case null:
-          statusText.text = "YOU TIED! BE SAAAAAAAAD :(";
+          TextManager.Instance.DisplayWinText("YOU TIED! BE SAAAAAAAAD :(");
           return;
         case EnumPlayerID.PLAYER1:
-          statusText.text = "PLAYER 1: BEEE CHAAAAAAMP!";
+          TextManager.Instance.DisplayWinText("PLAYER 1: BEEE CHAAAAAAAD!");
           return;
         case EnumPlayerID.PLAYER2:
-          statusText.text = "PLAYER 2: BEEE CHAAAAAAMP!";
+          TextManager.Instance.DisplayWinText("PLAYER 2: BEEE CHAAAAAAAD x2!");
           return;
         default:
-          statusText.text = "BE CONFUSED???";
+          TextManager.Instance.DisplayWinText("BE CONFUSED???");
           return;
       }
     }
 
-    if (_isCooldownTime) {
-      statusText.enabled = true;
-      statusText.text = "BE COOL! CHILL OUT!";
-      _statusTextSettings.speed = 1f;
+    if (_isCooldownTime && !_isCooldownTextDisplayed) {
+      _isCooldownTextDisplayed = true;
+      _isPlayTextDisplayed = false;
+
+      if (_currentParticles != null) Destroy(_currentParticles);
+
+      Vector3 particlesPos = transform.position;
+      particlesPos.y += 3;
+      _currentParticles = Instantiate(cooldownParticles, particlesPos, Quaternion.identity);
+
+      TextManager.Instance.DisplayCooldownText("BE COOL! CHILL OUT!");
       return;
     }
 
-    if (_currentTime > roundTime - statusStartGameDuration) {
-      statusText.enabled = true;
-      statusText.text = "BE CRAAAAAAAZYYYYY!";
-      _statusTextSettings.speed = 7f;
-      return;
-    }
-    else {
-      statusText.enabled = false;
-      _statusTextSettings.speed = 1f;
+    if (_currentTime > roundTime - statusStartGameDuration && !_isPlayTextDisplayed && !_isCooldownTime) {
+      _isCooldownTextDisplayed = false;
+      _isPlayTextDisplayed = true;
+
+      if (_currentParticles != null) Destroy(_currentParticles);
+      _currentParticles = Instantiate(playParticles, transform.position, Quaternion.identity);
+
+      TextManager.Instance.DisplayPlayText("BE CRAAAAAAAZYYYYY!");
       return;
     }
   }

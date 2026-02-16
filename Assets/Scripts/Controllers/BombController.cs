@@ -16,7 +16,9 @@ public class BombController : MonoBehaviour {
   /************** PRIVATE **************/
   private void Explode() {
     if (explotionParticles != null) {
-      Instantiate(explotionParticles, transform.position, Quaternion.identity);
+      Vector3 particlesPos = transform.position;
+      particlesPos.y += 1;
+      Instantiate(explotionParticles, particlesPos, Quaternion.identity);
     }
 
     Collider[] collisionList = Physics.OverlapSphere(transform.position, explosionRadius);

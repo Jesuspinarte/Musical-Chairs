@@ -1442,6 +1442,7 @@ MonoBehaviour:
   rotationSpeed: 0.15
   dampingModifier: 0.65
   childPosition: {fileID: 4954495082756661228}
+  deathParticles: {fileID: 6855314210357232287, guid: e520ec75785f696459d129dcfba5ebad, type: 3}
 --- !u!114 &811546781977142904
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1455,6 +1456,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerAction: {fileID: 0}
+  speedParticles: {fileID: 1429954232896169633, guid: cf9100096b9dce64b991f6572233b908, type: 3}
+  forceParticles: {fileID: 4021103657954561961, guid: ba606fd214f1817438f80a10dbd9b72a, type: 3}
+  magnetParticles: {fileID: 2708598583397607911, guid: eddc7e9400942c74889d83d162262576, type: 3}
 --- !u!114 &6000890421620645723
 MonoBehaviour:
   m_ObjectHideFlags: 0

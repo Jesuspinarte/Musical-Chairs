@@ -17,6 +17,9 @@ public class PlayerController : MonoBehaviour {
   [Header("Collectable Settings")]
   [SerializeField] private Transform childPosition; // Where the child will be when it's collected
 
+  [Header("Effects")]
+  [SerializeField] private GameObject deathParticles;
+
   private Vector2 _movementInput = Vector3.zero;
   private Transform _collecteKid = null;
   private Rigidbody _rb;
@@ -187,9 +190,11 @@ public class PlayerController : MonoBehaviour {
   private IEnumerator StartRespawnProcess() {
     if (_isDead) yield return null;
 
+    Instantiate(deathParticles, transform.position, Quaternion.identity);
     _isDead = true;
     ResetPowerProperties();
     DropKid();
+    TextManager.Instance.DisplayRespanwText(playerId);
 
     yield return new WaitForSeconds(GameManager.Instance.GetTimeToRespawn());
 

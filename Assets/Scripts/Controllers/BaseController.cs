@@ -25,4 +25,8 @@ public class BaseController : MonoBehaviour {
   public Transform GetCollectionPoint() {
     return collectionPoint;
   }
+
+  public EnumPlayerID GetBasePlayerOwner() {
+    return playerOwner;
+  }
 }

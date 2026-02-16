@@ -17,6 +17,10 @@ public class KidController : MonoBehaviour {
   [SerializeField] private float explosionRadius = 2f;
   [SerializeField] private float upwardsForce = 3f;
 
+  [Header("Effects")]
+  [SerializeField] private GameObject scoreParticles;
+  [SerializeField] private GameObject explosionParticles;
+
   private Rigidbody _rb;
   private bool _hasScored = false; // To prevent scoring twice or more
   private PlayerController _chairOwner = null; // The chair that collected the kid
@@ -60,7 +64,7 @@ public class KidController : MonoBehaviour {
       BaseController baseController = other.transform.GetComponent<BaseController>();
 
       baseController.AddScore(GetKidScore());
-      ScoreKid(baseController.GetCollectionPoint());
+      ScoreKid(baseController.GetCollectionPoint(), baseController.GetBasePlayerOwner());
     }
   }
 
@@ -74,6 +78,8 @@ public class KidController : MonoBehaviour {
 
   private void OnCooldownChange() {
     if (!TimeManager.Instance.IsCooldownTime()) return;
+
+    Instantiate(explosionParticles, transform.position, Quaternion.identity);
 
     float randomX = Random.Range(-1f, 1f);
     float randomZ = Random.Range(-1f, 1f);
@@ -94,12 +100,16 @@ public class KidController : MonoBehaviour {
   }
 
   /************** PUBLIC **************/
-  public KidController ScoreKid(Transform collectionPoint) {
+  public KidController ScoreKid(Transform collectionPoint, EnumPlayerID playerID) {
     DetachFromPlayer();
+    Vector3 particlesPos = transform.position;
+    particlesPos.y -= 1;
+    Instantiate(scoreParticles, particlesPos, Quaternion.identity);
+
+    TextManager.Instance.DisplayKidScore(transform.position, GetKidScore().ToString(), playerID);
 
     triggerCollider.enabled = false;
     transform.position = collectionPoint.position;
-
     // TODO: Maybe play some particles here
     Destroy(gameObject);
 
